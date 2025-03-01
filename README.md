@@ -34,10 +34,8 @@ Auto Page는 사용자의 웹 서핑 기록을 기억하고, 그 기록을 매�
 
 ## 기술 스택
 | 프레임워크 | 프론트엔드 | 빌드 | 테스트 | 배포 |
-| ---------- | ---------------------------------------------- |
-| <img src="https://img.shields.io/badge/Electron-3B4250?style=flat-square&logo=Electron&logoColor=#47848F"/> | <img src="https://img.shields.io/badge/React-3B4250?style=flat-square&logo=React&logoColor=#61DAFB"/> <br /> <img src="https://img.shields.io/badge/Zustand-3B4250?style=flat-square&logo=Zustand&logoColor=#3B4250"/> <br /> <img src="https://img.shields.io/badge/Tailwind-3B4250?style=flat-square&logo=tailwindcss&logoColor=#06B6D4"/> |
-<img src="https://img.shields.io/badge/Vite-3B4250?style=flat-square&logo=vite&logoColor=#646CFF"/> | <img src="https://img.shields.io/badge/Vitest-3B4250?style=flat-square&logo=vitest&logoColor=#6E9F18"/> |
-<img src="https://img.shields.io/badge/Netlify-3B4250?style=flat-square&logo=netlify&logoColor=#00C7B7"/> |
+| ---------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | 
+| <img src="https://img.shields.io/badge/Electron-3B4250?style=flat-square&logo=Electron&logoColor=#47848F"/> | <img src="https://img.shields.io/badge/React-3B4250?style=flat-square&logo=React&logoColor=#61DAFB"/> <br /> <img src="https://img.shields.io/badge/Zustand-3B4250?style=flat-square&logo=React&logoColor=#3B4250"/> <br /> <img src="https://img.shields.io/badge/Tailwind-3B4250?style=flat-square&logo=tailwindcss&logoColor=#06B6D4"/> | <img src="https://img.shields.io/badge/Vite-3B4250?style=flat-square&logo=vite&logoColor=#646CFF"/> | <img src="https://img.shields.io/badge/Vitest-3B4250?style=flat-square&logo=vitest&logoColor=#6E9F18"/> | <img src="https://img.shields.io/badge/Netlify-3B4250?style=flat-square&logo=netlify&logoColor=#00C7B7"/> <br /> <img src="https://img.shields.io/badge/Electron Builder-3B4250?style=flat-square&logo=electronbuilder&logoColor=#000000"/> |
 
 ## 기술 스택에 대한 이해
 1. 왜 Electron인가?
