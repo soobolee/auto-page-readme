@@ -139,7 +139,7 @@ const observer = new MutationObserver(() => {
 
 전체 동의 버튼을 누르면 스크립트에 의해서 아래 체크박스 또한 모두 체크된다. 만약 이런 사용자에 의한 변화가 아닌 스크립트에 의한 변화까지도 감지하고, 기록한다면 매크로 실행 시 체크박스를 다시 체크해제하는 등의 문제가 생길 수 있습니다.
 이런 측면에서 사용자에 의해 발생한 이벤트만 기록을 해야 했기 때문에, Event의 [isTrusted](https://dom.spec.whatwg.org/#dom-event-istrusted) 속성을 활용하여 사용자가 직접 발생시킨 이벤트만을 기록했습니다.<br />
-다만 [isTrusted](https://dom.spec.whatwg.org/#dom-event-istrusted)가 공식 명세를 확인했을 때 click()메서드는 판별할 수 없고, 타임스탬프 기준으로 사용자 이벤트를 판별하는 것이라, 이러한 예외에 대응하기 위해 사용자의 직전 이벤트와 현재 이벤트의 시간을 비교하여 0.5초 이내로 발생 시 사람이 아닌 스크립트에 의한 이벤트라고 판별하여 기록하지 않기로 했고, 스크립트가 자동으로 해주는 이벤트들에 대해 기록하지 않을 수 있었습니다.
+다만 [isTrusted](https://dom.spec.whatwg.org/#dom-event-istrusted)의 공식 명세를 확인했을 때 click()메서드는 판별할 수 없고, 타임스탬프 기준으로 사용자 이벤트를 판별하는 것이라, 이러한 예외에 대응하기 위해 사용자의 직전 이벤트와 현재 이벤트의 시간을 비교하여 0.5초 이내로 발생 시 사람이 아닌 스크립트에 의한 이벤트라고 판별하여 기록하지 않기로 했고, 스크립트가 자동으로 해주는 이벤트들에 대해 기록하지 않을 수 있었습니다.
 
 #### 5-1-4. 이벤트를 감지했으니, 이제 어떻게 기록해야 할까?<br />
 각 요소 별로 중복되지 않는 Id가 하나씩 할당되어 있다면, 정말 편하겠지만 현실은 그렇지 않았습니다. Id가 없는 경우, Class가 중복되는 경우 등 다양한 예외가 존재할 수 있어 이벤트 요소에 대해 많은 것을 수집해야 했습니다.<br />
@@ -169,7 +169,7 @@ SPA페이지일 경우 ```dom-ready```리스너에 감지되고나서 컨텐츠�
 #### 5-2-1. SPA일 경우 어떻게 동적으로 DOM요소를 찾을까?
 기존에는 ```dom-ready``` 리스너를 사용해서 dom이 로드가 완료 되었을 시 이벤트에 해당하는 요소를 찾아 실행했지만 SPA는 ```dom-ready```이후 동적으로 DOM이 다시 구성되기 때문에 DOM이 구성되기 전에는 찾을 수 없었습니다.<br />
 이를 위해 DOM변화가 감지되면 이벤트에 대상이 되는 타겟을 찾도록 ```MutationObserver```로 SPA 페이지에서 동적 요소들을 감지해낼 수 있었지만, 구성 속도에 따라 무한대기 해야하는 이슈가 생겼습니다.<br />
-그래서 1.5초의 제한시간을 두고 쓰레드를 점유하고, 타겟 요소를 찾는 while문을 구현했고, 요소가 동적으로 추가되는 시간을 고려하여 100ms 간격으로 반복하도록 했습니다.
+그래서 사용자가 불편함을 느낄만한 시간대를 직접 체크해 봤고, 크롬 개발자 페이지에서 [최대 로드 시간 2.5초 이내가 사용자에게 좋은 경험을 줄 수 있다](https://developers.google.com/speed/docs/insights/v5/about?hl=ko)는 것을 알게되었고, 1초의 제한시간을 두고 쓰레드를 점유하고, 타겟 요소를 찾는 while문을 구현했고, 요소가 동적으로 추가되는 시간을 고려하여 100ms 간격으로 반복하도록 했습니다. Id, Class, TagName을 모두 사용하여 타겟 요소를 찾고 Id, Class가 없는 경우도 존재하기 때문에 평균적으로 사용자가 동적 요소를 찾는데 까지의 시간은 2초가 소요 됩니다.
 ```js
 const start = Date.now();
 
@@ -181,6 +181,8 @@ while (!targetElement && Date.now() - start < 1500) {
 <br />
   
 #### 5-2-2. 페이지가 변경될 때마다 preload스크립트가 재실행되는데 어떻게 실행을 이어서 할까?
+매크로 실행 중 ```a```태그로 인해 페이지가 변경 될 경우 웹뷰에 주입해 놓았던 preload가 재실행 되면서 진행 중이던 매크로가 끊기게 되고 React의 매크로가 실행 중인지를 판별하는 상태는 업데이트가 되지 않아 두 프로세스 간 서로 상태 동기화가 되지 않는 문제가 있었습니다.<br />
+그래서 preload와 renderer프로세스의 React 상태를 동기화 시켜줄 필요가 있다고 생각했습니다. 페이지가 변경될 수 있는 preload에는 배열을 순회할 때마다 ```restStageList.shift();```를 통해 이미 실행된 매크로를 제거해주었고, ```beforeunload```리스너를 걸어 해당 리스너가 감지되면, 매크로 실행을 멈추고, IPC통신으로 renderer프로세스로 매크로가 중지된 시점의 배열인 ```restStageList```를 보내주었습니다.
 ```js
 // preload/main.js 송신 측
 const unloadEvent = () => {
@@ -192,11 +194,36 @@ const unloadEvent = () => {
 window.addEventListener("beforeunload", unloadEvent);
 ```
 
+<br />
+renderer프로세스에서는 preload에서 보낸 이벤트를 수신하여 정지된 시점에 매크로 배열을 sessionStorage에 담아주었습니다.
+
 ```js
 // WebView.js 수신 측
 if (event.channel === "macro-stop") {
   window.sessionStorage.setItem("resumeMacroList", JSON.stringify(event.args[0]));
 }
+```
+
+<br />
+
+그 후 웹뷰에 다시 preload의 ```dom-ready```가 감지되면 현재 매크로가 실행 중이었는지를 확인하고, sessionStorage에 넣었던 매크로 리스트를 파싱하여 preload에 매크로가 다시 실행돼야 한다는 IPC를 보내 서로 프로세스가 다른 preload와 renderer의 상태를 동기화했습니다.
+
+```js
+// WebView.js 매크로 재실행
+const handleDomReady = () => {
+  if (isMacroExecuting) {
+    const resumeMacroList = window.sessionStorage.getItem("resumeMacroList");
+    window.sessionStorage.removeItem("resumeMacroList");
+
+    const parseResumeMacroList = JSON.parse(resumeMacroList);
+
+    if (parseResumeMacroList && parseResumeMacroList.length > 0) {
+      webViewRef.current.send("auto-macro", parseResumeMacroList);
+    } else {
+      webViewRef.current.send("auto-macro", macroStageList);
+    }
+  }
+};
 ```
 
 
