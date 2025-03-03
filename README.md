@@ -239,7 +239,7 @@ Auto Page에서는 사용자가 매크로를 기록하거나 수정할 때 해�
 
 #### ```did-stop-loading``` 리스너의 문제점
 ```did-stop-loading```리스너가 감지되는 시점은 브라우저의 favicon이 로딩 스피너로 바뀌는 시점과 동일합니다. 그 말은 favicon이 로딩하는 시점이 결국 이벤트가 감지되는 시점인데, favicon은 네트워크 요청을 보내거나, img, video같은 무거운 리소스를 받아올 때마다 이벤트가 감지됩니다.<br />
-그에 따라 이벤트가 발생할 때 마다 화면이 캡쳐되는 문제가 발생했고, 이를 제어할 필요가 있었습니다. 동시에 여러개의 이벤트가 등록될 가능성이 있어 매번 이벤트 실행 시마다 removeEventListener를 통해 한 개의 이벤트만 존재할 수 있도록 하였고 디바운싱을 통해 맨 마지막 ```did-stop-loading```을 기다린 후 이미지를 촬영했습니다.
+그에 따라 이벤트가 발생할 때 마다 화면이 캡쳐되는 문제가 발생했고, 이를 제어할 필요가 있었습니다. 동시에 여러개의 이벤트가 등록될 가능성이 있어 매번 이벤트 실행 시마다 removeEventListener를 통해 한 개의 이벤트만 존재할 수 있도록 하였고 디바운싱을 적용해 마지막 ```did-stop-loading```을 기다린 후 이미지를 촬영했습니다.
 ```js
 currentWebview.removeEventListener("did-stop-loading", captureLoadedPage);
 
