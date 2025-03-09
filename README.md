@@ -1,7 +1,7 @@
 # 🤖 Auto Page - Copy Cat your Web Surfing
 <div align="center">
-  
-  ![icon](https://github.com/user-attachments/assets/0862acdb-ea22-4319-9d16-ca15a04b4fbd)
+
+  ![icon](https://github.com/user-attachments/assets/f6121f9a-bcd0-4bec-978e-7eb5c3a69d15)
   <br />
   📸 [시연 영상 보러가기](https://youtu.be/OHQtxUwDZ5Q) | 
   📦 [다운로드 바로가기](https://www.auto-page.site)
@@ -34,8 +34,9 @@ Auto Page는 사용자의 웹 서핑 기록을 기억하고, 그 기록을 매�
   - [5-2. 기록한 매크로를 어떻게 다시 실행시킬까?](#5-2-기록한-매크로를-어떻게-다시-실행시킬까)<br />
     - [5-2-1. SPA일 경우 어떻게 동적으로 DOM요소를 찾을까?](#5-2-1-spa일-경우-어떻게-동적으로-dom요소를-찾을까)<br />
     - [5-2-2. 페이지가 변경될 때마다 preload스크립트가 재실행되는데 어떻게 실행을 이어서 할까?](#5-2-2-페이지가-변경될-때마다-preload스크립트가-재실행되는데-어떻게-실행을-이어서-할까)<br />
-    - [5-3. 이벤트 발생 직후의 이미지 캡쳐](#5-3-이벤트-발생-직후의-이미지-캡쳐)<br />
-    - [5-4. BrowserRouter와 HashRouter의 차이](#5-4-browserrouter와-hashrouter의-차이)<br />
+  - [5-3. 다양한 에러 발생 가능성](#5-3-다양한-에러-발생-가능성)<br />
+  - [5-4. 이벤트 발생 직후의 이미지 캡쳐](#5-4-이벤트-발생-직후의-이미지-캡쳐)<br />
+  - [5-5. BrowserRouter와 HashRouter의 차이](#5-5-browserrouter와-hashrouter의-차이)<br />
 - [6. 일정](#6-일정)<br />
 
 <br />
@@ -56,19 +57,19 @@ Auto Page는 사용자의 웹 서핑 기록을 기억하고, 그 기록을 매�
   <table>
     <tr>
       <td width="60%">
-        <img src="https://github.com/user-attachments/assets/174ef1dc-72c1-4204-9723-91a98716bb7e" />
+        <img src="https://github.com/user-attachments/assets/b03ad453-5173-4624-b5e0-0802bae66412" />
       </td>
       <td width="40%">기존 브라우저와 비슷한 환경 제공 <br /> 앞으로 가기/ 뒤로 가기 및 새로고침을 구현되어 있습니다.</td>
     </tr>
     <tr>
       <td>
-        <img src="https://github.com/user-attachments/assets/1d5e6a10-8856-434f-8d4c-76714ac4936a" />
+        <img src="https://github.com/user-attachments/assets/dc68ffc6-465d-4594-8860-1707675cba53" />
       </td>
       <td>사용자 상호작용 기록 <br /> 사용자의 클릭, 입력 요소에 대해 tagName, id, class, url을 기록하고, 이벤트 후의 변경사항이 반영된 화면을 캡쳐하여 저장합니다.</td>
     </tr>
     <tr>
       <td>
-        <img src="https://github.com/user-attachments/assets/6fcd87a9-4181-486a-b8c5-b900a0581830" />
+        <img src="https://github.com/user-attachments/assets/ca5d6d86-a21c-4979-95c5-a3cb5252f0d9" />
       </td>
       <td>기록된 매크로를 실행 <br /> DOM이 다시 로드 되거나, 페이지가 이동해도 순서는 보장됩니다.</td>
     </tr>
@@ -110,7 +111,7 @@ Electron은 main 및 renderer라는 두 가지 유형의 독립된 프로세스�
 3. 이벤트 감지 및 전달: preload를 ```webview```에 주입해 renderer프로세스에서 이벤트를 감지하고 main 프로세스로 전달하기 용이했습니다.  
 <div align="center">
   
-![스크린샷 2025-03-01 오후 7 44 17](https://github.com/user-attachments/assets/b8057adc-58c7-4a09-a062-595a1c88b6ba)
+![스크린샷 2025-03-01 오후 7 44 17](https://github.com/user-attachments/assets/db8e3ffc-d2f8-478b-b237-9451cfd8e2a7)
 
 </div>
 
@@ -166,8 +167,8 @@ const observer = new MutationObserver(() => {
 
 #### 5-1-3. 정말 사용자와 상호작용해서 발생한 이벤트일까?
 <div align="center">
-  
-  <img width="551" alt="스크린샷 2025-03-02 오후 9 18 31" src="https://github.com/user-attachments/assets/ef246f85-f932-4831-bf64-280006ccc222" />
+
+  <img width="551" src="https://github.com/user-attachments/assets/e2816144-8c2a-453a-9d5c-5a35cbcee8c6" />
 
 </div>
 
@@ -260,13 +261,35 @@ const handleDomReady = () => {
 };
 ```
 
+### 5-3. **다양한 에러 발생에 대한 처리**
+Auto Page 프로젝트는 사용자의 행동을 기반으로 웹 서핑을 기록하고, 재실행하는 기능을 제공하고 기록을 File System에 저장 및 삭제 그리고 불러오기 기능을 제공하기 때문에 다양햔 사용자의 입력과 환경에 변화에 의해 여러가지 에러가 발생할 가능성이 있다고 생각됐습니다.<br />
+예를 들어 파일 저장/삭제 중 에러, 매크로 실행 중 에러 등 다양한 에러가 발생할 수 있다고 생각됐습니다.
 
-### 5-3. **이벤트 발생 직후의 이미지 캡쳐**
+발생할 수 있는 에러의 종류가 많기 때문에 각 컴포넌트 별로 각 에러에 대한 문구 및 처리 방법을 정해 놓으면 매번 해당 문구를 어디에 적어 놓았는지 찾아야 하기 때문에 유지보수적으로 좋지 않다고 생각 되었습니다.
+따라서, 각 에러 처리에 대한 문구를 한 번에 관리하고 저장할 수 있는 상수 파일을 하나 생성했고 각각의 상수가 특정한 에러를 나타내고 코드 내에서 객체의 형태로 일관되게 처리될 수 있는 ENUM 개념을 적용하고 추후 상수의 데이터 불변성을 유지하기 위해 ```freeze``` 메서드를 통해 상수의 값을 수정할 수 없도록 했습니다.
+```js
+export const ALERT_ERROR_LOAD = {
+  TITLE: "매크로를 불러오는 중 오류가 발생했습니다.",
+  TEXT: "앱을 다시 실행해 주세요.",
+  ICON: faCircleExclamation,
+};
+
+export const ALERT_ERROR_URL = {
+  TITLE: "URL을 불러오는 중 실패했습니다.",
+  TEXT: "정확한 URL인지 다시 확인해주세요.",
+  ICON: faCircleExclamation,
+};
+
+Object.freeze(ALERT_ERROR_LOAD);
+Object.freeze(ALERT_ERROR_URL);
+```
+
+### 5-4. **이벤트 발생 직후의 이미지 캡쳐**
 Auto Page에서는 사용자가 매크로를 기록하거나 수정할 때 해당 이벤트로 화면에 어떤 변화가 있었는지 쉽게 기억할 수 있도록 이벤트 직후 시점을 이미지로 남겨야 했습니다. 따라서, 이벤트가 발생한 후의 시점을 정확히 감지해야 했습니다.<br />
 클릭이나, 입력 등 현재 페이지 내에서 일어나는 이벤트의 발생 직후는 캐치하기 쉬웠지만, 이벤트가 페이지 전환을 유발하거나 새로운 페이지를 띄울 때는 페이지 로딩 시간과 캡쳐 시점의 문제로 빈 화면이 캡쳐되는 이슈가 있었습니다.
 
 <div align="center">
-  <img width="174" alt="스크린샷 2025-03-03 오전 4 40 00" src="https://github.com/user-attachments/assets/59f5102f-bcd9-4c2e-bbb1-ab9140bc49b3" />
+  <img width="174" alt="스크린샷 2025-03-03 오전 4 40 00" src="https://github.com/user-attachments/assets/da9c4eb0-54a8-462c-930b-a4449aed3e57" />
 </div>
 
 이 문제를 해결하기 위해 ```did-stop-loading``` 리스너를 사용해 페이지가 로드된 시점을 감지하고, 그 후에 이미지를 캡처하도록 했습니다.
@@ -289,7 +312,7 @@ timerObject = setTimeout(() => {
 
 <br />
 
-### 5-4. **BrowserRouter와 HashRouter의 차이**
+### 5-5. **BrowserRouter와 HashRouter의 차이**
 Electron은 기본적으로 html파일을 로드할 때 Main 프로세스 Node.js환경에서 파일 프로토콜[```file://```]을 사용하여 Renderer 프로세스에 HTML을 로드하는 정적 서버를 구성하고 있습니다, 라우팅을 사용하지 않았던 초기 개발에선 이를 중요하게 생각하지 않았기 때문에, BrowserRouter를 사용하였지만 빌드 과정에서 흰 화면이 뜨는 이슈가 발생했고, 라우팅 문제라고 생각되어서 라우팅에 대해 깊이 공부해 봤습니다.<br /><br />
 BrowserRouter는 history API를 사용하여 URL을 관리하고, 클라이언트 측 이동이 발생했을 때 history에 들어있는 URL 경로를 통해 요청한 컴포넌트의 경로를 요청하기 때문에 Electron 앱애서 BrowserRouter를 통한 라우팅을 사용하면 다음과 같은 상황이 벌어집니다.<br />
 Electron은 파일 프로토콜[```file://```]을 사용하기 때문에 BrowserRouter는 사용자의 로컬 환경에서 ```index.html/macro```라는 파일을 찾으려고 시도할 것입니다.
@@ -303,6 +326,30 @@ Electron이 파일 프로토콜[```file://```]을 사용한다는 것을 인지�
 "file://localhost:3000/#/index.html/macro";
 ```
 HashRouter의 경우 ```#```을 통해 요청이 서버로 전달되지 않게 됩니다. 따라서, 파일 프로토콜을 사용한다고 해도 사용자 로컬에서 파일을 찾아 404를 반환하지 않을 수 있었고, HashRouter를 통해 클라이언트 환경에서 라우팅을 처리해 라우팅 문제를 해결했습니다.
+
+### 5-6. **입력값에 대한 암호화 처리**
+Auto Page 프로젝트에서는 기록된 매크로를 재실행할 때 사용자의 입력값(Input)도 함께 기록해야만 이벤트 실행의 정확성을 보장할 수 있었습니다. 이러한 입력값에는 사용자의 ID와 비밀번호와 같은 민감한 정보가 포함될 수 있기 때문에, 모든 입력값을 암호화할 필요가 있었습니다. ID와 비밀번호를 판별할 수 없기 때문에 모든 입력값에 대해 암호화를 적용하기로 결정했습니다.<br /><br />
+
+암호화 방식은 양방향 암호화(AES-256-CBC)를 사용하여 암호화와 복호화가 가능하게 했고, 암호화에 필요한 키와 초기화 벡터(IV)는 사용자 로컬에 저장하였습니다. 키를 사용자 로컬에 저장한 이유는 Auto Page가 일렉트론 앱으로 사용자 컴퓨터에서 작동하며, 암호화와 복호화가 Node.js 환경에서만 이루어지기 때문에 키를 로컬에 저장해도 안전성을 보장할 수 있다고 판단했기 때문입니다.<br />
+```js
+function encrypt(text) {
+  const algorithm = "aes-256-cbc";
+  const key = fs.readFileSync(join(app.getPath("userData"), "CRYPT_KEY"));
+  const iv = fs.readFileSync(join(app.getPath("userData"), "CRYPT_IV"));
+
+  const cipher = crypto.createCipheriv(algorithm, key, iv);
+  let encrypted = cipher.update(text, "utf8", "hex");
+  encrypted += cipher.final("hex");
+
+  return encrypted;
+}
+```
+1. 먼저 AES-256-CBC 알고리즘을 설정하고, 키와 IV를 사용자 데이터 디렉터리에서 읽어옵니다.
+2. 그런 다음 crypto.createCipheriv 함수를 사용하여 암호화 객체를 생성하고, 주어진 텍스트를 암호화한 후 hex 형식으로 변환하여 반환합니다.
+3. 복호화 과정도 비슷하게 진행되며, AES-256-CBC 알고리즘을 설정하고, 키와 IV를 사용자 데이터 디렉터리에서 읽어온 후 crypto.createDecipheriv 함수를 사용하여 복호화 객체를 생성합니다.
+ > IV는 초기화 백터의 약자로 매번 같은 키로 암호화를 진행 시 결과가 항상 같아 복호화에 대한 실마리를 제공하지만, 랜덤한 IV를 통해 매번 다른 암호화를 진행하고 복호화하기 때문에 암호화 시 안정성을 높여줄 수 있습니다.<br /><br />
+ > IV는 암호키와 같은 방식으로 사용자 컴퓨터 내 Auto Page 경로에 암호키와 함께 저장하고 있습니다.   
+4. 암호화된 텍스트를 복호화하여 원래의 utf8 형식으로 변환하고 반환합니다.
 
 ## 6. 일정
 ### 프로젝트 기간: 2025년 2월 1일 ~ 진행 중
